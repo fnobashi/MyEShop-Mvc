@@ -1,0 +1,132 @@
+﻿@using MyEShop.Areas.Admin.Models.ViewModels.Users
+@model IEnumerable<UsersListViewModel>
+@{
+    ViewData["Title"] = "لیست کاربران";
+    int totalPages = ViewBag.TotalPages;
+    int page = ViewBag.Page;
+    int pageSize = ViewBag.PageSize;
+
+}
+
+
+<div class="card">
+    <header class="card-header">
+        <h2>کاربران سایت</h2>
+        <div class="d-block my-2">
+            <a asp-action="Add" class="btn btn-primary">افزودن کاربر جدید</a>
+        </div>
+    </header>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>نام کامل</th>
+                    <th>ایمیل</th>
+                    <th>شماره تماس</th>
+                    <th>کنترل ها</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.FullName</strong></td>
+                        <td>@item.Email</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    <a class="dropdown-item" asp-action="Edit" asp-route-id= "@item.UserId"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                                    <a class="dropdown-item" asp-action="Delete" asp-route-id= "@item.UserId"><i class="bx bx-trash me-1"></i> حذف</a>
+                                    <a class="dropdown-item" onclick="ViewDetail('@item.UserId')"><i class="bx bx-detail  me-1"></i> جزئیات</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <div class="card-footer text-center my-auto">
+            <div class="row">
+                <div class="col-11">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+
+                            @for (var i = 1; i <= totalPages; i++)
+                            {
+                                @if (page == i)
+                                {
+                                    <li class="page-item active">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@pageSize">@i</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@pageSize">@i</a>
+                                    </li>
+                                }
+                            }
+
+                        </ul>
+                    </nav>
+
+                </div>
+                <div class="col-1">
+
+                    <form asp-action="Index" method="get">
+                        <div class="form-group">
+                            <label class="">تعداد نمایش</label>
+                            <select dir="ltr" onchange="this.form.submit()" name="pageSize" class="form-select"  aria-label="Default select example">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="25">25</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Modal{
+    <div class="modal fade show" id="Modal" tabindex="-1" style="display: none; padding-left: 0px;" aria-modal="true" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">جزئیات</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="ModalContent">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              بستن
+            </button>
+          </div>
+        </div>
+      </div>
+     </div>
+
+}
+
+@section Scripts{
+    <script>
+        function ViewDetail(id){
+            $("#ModalContent").load("/Admin/Users/Detail/" + id);
+            $("#Modal").modal("show");
+        }
+    </script>
+}

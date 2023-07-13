@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\admin\assets\css\RtlCompatibility.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Core" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Templating" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc" Version="7.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
+    <None Include="wwwroot\Fonts\font-icons\font-icons.svg" />
+    <None Include="wwwroot\Fonts\font-icons\font-icons.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-Black-FD-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-Bold-FD-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-FD-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-Light-FD-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-Medium-FD-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-Thin-FD-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits\Vazir-Black-FD.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits\Vazir-Bold-FD.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits\Vazir-FD.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits\Vazir-Light-FD.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits\Vazir-Medium-FD.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Farsi-Digits\Vazir-Thin-FD.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Root\Vazir-Black.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Root\Vazir-Bold.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Root\Vazir-Light.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Root\Vazir-Medium.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Root\Vazir-Thin.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Root\Vazir.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-Black-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-Bold-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-Light-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-Medium-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-Thin-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-WOL.woff2" />
+    <None Include="wwwroot\Fonts\Yekan\Yekan.svg" />
+    <None Include="wwwroot\Fonts\Yekan\Yekan.woff2" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,104 @@
+﻿@using MyEShop.Areas.Admin.Models.ViewModels.Users;
+@model UserViewModel
+@{
+	ViewData["Title"] = "افزودن کاربر جدید";
+}
+
+
+<div class="row">
+	<!-- Basic with Icons -->
+	<div class="col-xxl">
+		<div class="card mb-4">
+			<div class="card-header d-flex align-items-center justify-content-between">
+				<h5 class="mb-0">افزودن</h5>
+			</div>
+			<div class="card-body">
+				<form asp-action="Add" asp-controller="Users" asp-antiforgery="true" method="post">
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="Name"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Name" class="form-control">
+							</div>
+							<span asp-validation-for="Name" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="Family"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Family"  class="form-control" >
+							</div>
+							<span asp-validation-for="Family" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="Email"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Email"  class="form-control" >
+							</div>
+							<span asp-validation-for="Email" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Phone"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Phone"  class="form-control phone-mask" placeholder="09XX xxxxxxx" aria-label="09XX xxxxxxx">                              
+							</div>
+							<span asp-validation-for="Phone" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Address"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<textarea asp-for="Address"  class="form-control" placeholder="آدرس را وارد کنید" aria-label="آدرس را وارد کنید"></textarea>									
+							</div>
+							<span asp-validation-for="Address" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="PostalCode"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="PostalCode"  class="form-control phone-mask" placeholder="16123456789" aria-label="16123456789">                               
+							</div>
+							<span asp-validation-for="PostalCode" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Password"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Password" class="form-control phone-mask" placeholder="16123456789" aria-label="16123456789">
+							</div>
+							<span asp-validation-for="Password" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="RePassword"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="RePassword" class="form-control phone-mask" placeholder="16123456789" aria-label="16123456789">
+							</div>
+							<span asp-validation-for="RePassword" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row justify-content-end">
+						<div class="col-sm-10">
+							<button type="submit" class="btn btn-primary">ایجاد</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}
