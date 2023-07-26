@@ -1,0 +1,345 @@
+﻿@using MyEShop.Contracts.Repositories;
+@using MyEShop.Models.Entities.Category;
+@inject ICategoryRepository categoryRepository;
+@{
+    var categories = categoryRepository.GetAll().ToList();
+    MarkDuplicates(categories);
+
+}
+
+@functions {
+    private void MarkDuplicates(List<Category> categories)
+    {
+        var categoryIds = new HashSet<long>();
+        foreach (var category in categories)
+        {
+            if (categoryIds.Contains(category.Id))
+            {
+                category.IsDuplicate = true;
+            }
+            else
+            {
+                categoryIds.Add(category.Id);
+            }
+            if (category.Children != null)
+            {
+                MarkDuplicates(category.Children);
+            }
+        }
+    }
+}
+
+<nav class="site-navigation bg-color-White" id="site-navigation">
+    <div class="navigation-overlay"></div>
+    <div class="row align-items-center">
+        <div class="right col-10">
+            <div class="responsive-menu-icon d-none cursor-pointer">
+                <i class="site-icon-menu font-size-xl"></i>
+            </div>
+            <ul class="navigation-links d-flex align-items-center">
+                @foreach (var item in categories)
+                {
+                    @if (!item.IsDuplicate)
+                    {
+                        if (item.Children == null)
+                        {
+                            <li class="navigation-link color-text">
+                                <a>@item.Name</a>
+                            </li>
+                        }
+                        else
+                        {
+
+                            <li class="navigation-link color-text sub-navigation">
+                                <a class="sub-navigation-link">@item.Name</a>
+                                <div class="sub-navigation-menu">
+                                    <ul class="sub-menu-items">
+                                        @foreach (var subcategory in item.Children)
+                                        {
+                                            @if (!subcategory.IsDuplicate)
+                                            {
+                                                <li class="sub-menu-category">
+                                                    <a href="#" class="category-header">@subcategory.Name</a>
+                                                    @if (subcategory.Children != null)
+                                                    {
+                                                        @foreach (var cat in subcategory.Children)
+                                                        {
+                                                            @if (!cat.IsDuplicate)
+                                                            {
+                                                                <ul class="category-list-items">
+                                                                    <li><a href="#">@cat.Name</a></li>
+                                                                </ul>
+                                                            }
+                                                            cat.IsDuplicate = true;
+                                                        }
+                                                    }
+                                                </li>
+                                            }
+                                            subcategory.IsDuplicate = true;
+
+                                        }
+                                    </ul>
+                                </div>
+                            </li>
+                        }
+                    }
+                    item.IsDuplicate = true;
+                }
+            </ul>
+        </div>
+        <div class="left col-2 cart-basket">
+            <a href="#" class="cart-basket-box">
+                <div class="cart-basket push-left">
+                    <span class="cart-icon">
+                        <i class="site-icon-basket"></i>
+                    </span>
+                    <span class="cart-title">سبد خرید</span>
+                    <span class="cart-price">25/000/000 تومان</span>
+                    <span class="cart-count">20</span>
+                </div>
+            </a>
+            <div class="widget-shopping-cart">
+                <div class="cart-items">
+                    <ul>
+                        <li class="cart-item">
+                            <div class="item-picture">
+                                <a href="/delete" class="delete-product">
+                                    <i class="site-icon-close"></i>
+                                </a>
+                                <img src="/Images/Site-Menu/digital.png" alt="لب تاب">
+                            </div>
+                            <h3 class="item-title">لب تاب جووی الترا بوک 14 اینچ پرو</h3>
+                            <div class="item-price">
+                                <span>قیمت : </span>
+                                <span>12،000،000 تومان</span>
+                            </div>
+                        </li>
+                        <li class="cart-item">
+                            <div class="item-picture">
+                                <a href="/delete" class="delete-product">
+                                    <i class="site-icon-close"></i>
+                                </a>
+                                <img src="/Images/Site-Menu/digital.png" alt="لب تاب">
+                            </div>
+                            <h3 class="item-title">لب تاب جووی الترا بوک 14 اینچ پرو</h3>
+                            <div class="item-price">
+                                <span>قیمت : </span>
+                                <span>12،000،000 تومان</span>
+                            </div>
+                        </li>
+                        <li class="cart-item">
+                            <div class="item-picture">
+                                <a href="/delete" class="delete-product">
+                                    <i class="site-icon-close"></i>
+                                </a>
+                                <img src="/Images/Site-Menu/digital.png" alt="لب تاب">
+                            </div>
+                            <h3 class="item-title">لب تاب جووی الترا بوک 14 اینچ پرو</h3>
+                            <div class="item-price">
+                                <span>قیمت : </span>
+                                <span>12،000،000 تومان</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cart-total">
+                    <h3 class="d-inline">قیمت کل : </h3>
+                    <span class="color-text">18،000،000 تومان</span>
+                </div>
+                <div class="cart-button">
+                    <div class="btn-container">
+                        <a href="" class="color-text hover-color-primary">مشاهده سبد خرید</a>
+                        <a href="#" class="btn btn-primary color-light">تسویه حساب</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<aside class="responsive-site-navigation">
+    <div class="logo-container">
+        <div class="logo">
+            <img src="/Images/Site-logo/logo.png" alt="logo">
+        </div>
+    </div>
+    <ul class="navigation-links">
+        <li class="navigation-link color-text sub-navigation">
+            <span class="sub-navigation-link" data-slide-toggle-click>کالای دیجیتال</span>
+            <div class="sub-navigation-menu" data-slide-toggle>
+                <ul class="sub-menu-items">
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>موبایل</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">اپل</a></li>
+                            <li><a href="#">سامسونگ</a></li>
+                            <li><a href="#">ایسوس</a></li>
+                            <li><a href="#">هواوی</a></li>
+                            <li><a href="#">نوکیا</a></li>
+                            <li><a href="#">ال جی</a></li>
+                            <li><a href="#">اچ تی سی</a></li>
+                            <li><a href="#">سونی</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>تبلت و کتابخوان</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">اپل</a></li>
+                            <li><a href="#">سامسونگ</a></li>
+                            <li><a href="#">ایسوس</a></li>
+                            <li><a href="#">ایسر</a></li>
+                            <li><a href="#">نوکیا</a></li>
+                            <li><a href="#">ال جی</a></li>
+                            <li><a href="#">اچ تی سی</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>کامپیوتر و تجهیزات جانبی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">هارد دیسک</a></li>
+                            <li><a href="#">موس</a></li>
+                            <li><a>کیبورد</a></li>
+                            <li><a href="#">نمایشگر</a></li>
+                            <li><a href="#">پردازنده</a></li>
+                            <li><a href="#">مادر برد</a></li>
+                            <li><a href="">کارت گرفیگ</a></li>
+                            <li><a href="">رم</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>دوربین</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="">دروبین عکاسی</a></li>
+                            <li><a href="">دروبین فیلم برداری</a></li>
+                            <li><a href="">تلسکوپ</a></li>
+                            <li><a href="">میکروسکوپ و ذره بین</a></li>
+                            <li><a href="">لوازم جانبی عکاسی و فیلم برداری</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </li>
+        <li class="navigation-link color-text sub-navigation">
+            <span class="sub-navigation-link" data-slide-toggle-click>آرایشی و بهداشتی</span>
+            <div class="sub-navigation-menu" data-slide-toggle>
+                <ul class="sub-menu-items">
+                    <li class="sub-menu-category">
+                        <span href="#" class="category-header" data-slide-toggle-click>لوازم آرایشی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">آرایش چشم و ابرو</a></li>
+                            <li><a href="#">آرایش لب</a></li>
+                            <li><a href="#">آرایش صورت</a></li>
+                            <li><a href="#">تجهیزات جانبی آرایش</a></li>
+                            <li><a href="#">سنگ پاو زیبایی ناخن</a></li>
+                            <li><a href="#">مواد آرایش مو</a></li>
+                            <li><a href="#">کرم و مراقبت پوست</a></li>
+                            <li><a href="#">شامپو و مراقبت مو</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>لوازم شخصی برقی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">ماشین اصلاح صورت</a></li>
+                            <li><a href="#">ماشین اصلاح سر</a></li>
+                            <li><a href="#">سشوار</a></li>
+                            <li><a href="#">اصلاح بدن آقایان</a></li>
+                            <li><a href="#">اصلاح موی گوش ، بینی و ابرو</a></li>
+                            <li><a href="#">بررسی پاکسازی</a></li>
+                            <li><a href="#">اتو مو و حالت دهنده</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>لوازم بهداشتی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">کرم و مراقبت پوست</a></li>
+                            <li><a href="#">شامپو و مراقبت مو</a></li>
+                            <li><a>بهداشت دهان و دندان</a></li>
+                            <li><a href="#">بهداشت و مراقبت بدن</a></li>
+                            <li><a href="#">ضد تعریق</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>ابزار سلامتی و طبی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="">مچ بند و ساعت طبی</a></li>
+                            <li><a href="">ترازو</a></li>
+                            <li><a href="">کالای خواب و استراحت طبی</a></li>
+                            <li><a href="">تست قند خون</a></li>
+                            <li><a href="">تب سنج</a></li>
+                            <li><a href="">فشارسنج</a></li>
+                            <li><a href="">نمایشگر ضربان قلب</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </li>
+        <li class="navigation-link color-text">
+            <a>ابزار و اداری</a>
+        </li>
+        <li class="navigation-link color-text">
+            <a>مد و پوشاک</a>
+        </li>
+        <li class="navigation-link color-text sub-navigation">
+            <span class="sub-navigation-link" data-slide-toggle-click>خانه و آشپزخانه</span>
+            <div class="sub-navigation-menu" data-slide-toggle>
+                <ul class="sub-menu-items">
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>لوازم آرایشی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">آرایش چشم و ابرو</a></li>
+                            <li><a href="#">آرایش لب</a></li>
+                            <li><a href="#">آرایش صورت</a></li>
+                            <li><a href="#">تجهیزات جانبی آرایش</a></li>
+                            <li><a href="#">سنگ پاو زیبایی ناخن</a></li>
+                            <li><a href="#">مواد آرایش مو</a></li>
+                            <li><a href="#">کرم و مراقبت پوست</a></li>
+                            <li><a href="#">شامپو و مراقبت مو</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>لوازم شخصی برقی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">ماشین اصلاح صورت</a></li>
+                            <li><a href="#">ماشین اصلاح سر</a></li>
+                            <li><a href="#">سشوار</a></li>
+                            <li><a href="#">اصلاح بدن آقایان</a></li>
+                            <li><a href="#">اصلاح موی گوش ، بینی و ابرو</a></li>
+                            <li><a href="#">بررسی پاکسازی</a></li>
+                            <li><a href="#">اتو مو و حالت دهنده</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>لوازم بهداشتی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="#">کرم و مراقبت پوست</a></li>
+                            <li><a href="#">شامپو و مراقبت مو</a></li>
+                            <li><a>بهداشت دهان و دندان</a></li>
+                            <li><a href="#">بهداشت و مراقبت بدن</a></li>
+                            <li><a href="#">ضد تعریق</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu-category">
+                        <span class="category-header" data-slide-toggle-click>ابزار سلامتی و طبی</span>
+                        <ul class="category-list-items" data-slide-toggle>
+                            <li><a href="">مچ بند و ساعت طبی</a></li>
+                            <li><a href="">ترازو</a></li>
+                            <li><a href="">کالای خواب و استراحت طبی</a></li>
+                            <li><a href="">تست قند خون</a></li>
+                            <li><a href="">تب سنج</a></li>
+                            <li><a href="">فشارسنج</a></li>
+                            <li><a href="">نمایشگر ضربان قلب</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </li>
+        <li class="navigation-link color-text">
+            <a>لوازم تحریر و هنر</a>
+        </li>
+        <li class="navigation-link color-text">
+            <a>کودک و نوزاد</a>
+        </li>
+    </ul>
+</aside>

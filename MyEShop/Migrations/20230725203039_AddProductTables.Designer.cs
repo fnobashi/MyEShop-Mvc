@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyEShop.Context;
 
@@ -11,9 +12,11 @@ using MyEShop.Context;
 namespace MyEShop.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230725203039_AddProductTables")]
+    partial class AddProductTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,18 +145,11 @@ namespace MyEShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -181,8 +177,6 @@ namespace MyEShop.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -212,17 +206,12 @@ namespace MyEShop.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductAttributes");
                 });
@@ -265,15 +254,10 @@ namespace MyEShop.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -305,12 +289,7 @@ namespace MyEShop.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
                 });
@@ -335,9 +314,6 @@ namespace MyEShop.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("ProductQuestionAndAnswerId")
                         .HasColumnType("bigint");
 
@@ -349,8 +325,6 @@ namespace MyEShop.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.HasIndex("ProductQuestionAndAnswerId");
 
@@ -512,21 +486,21 @@ namespace MyEShop.Migrations
                         new
                         {
                             Id = 1L,
-                            CreateDate = new DateTime(2023, 7, 26, 11, 38, 2, 387, DateTimeKind.Local).AddTicks(4785),
+                            CreateDate = new DateTime(2023, 7, 26, 0, 0, 38, 764, DateTimeKind.Local).AddTicks(476),
                             IsDeleted = false,
                             RoleName = "Admin"
                         },
                         new
                         {
                             Id = 2L,
-                            CreateDate = new DateTime(2023, 7, 26, 11, 38, 2, 387, DateTimeKind.Local).AddTicks(4870),
+                            CreateDate = new DateTime(2023, 7, 26, 0, 0, 38, 764, DateTimeKind.Local).AddTicks(545),
                             IsDeleted = false,
                             RoleName = "Operator"
                         },
                         new
                         {
                             Id = 3L,
-                            CreateDate = new DateTime(2023, 7, 26, 11, 38, 2, 387, DateTimeKind.Local).AddTicks(4895),
+                            CreateDate = new DateTime(2023, 7, 26, 0, 0, 38, 764, DateTimeKind.Local).AddTicks(569),
                             IsDeleted = false,
                             RoleName = "Customer"
                         });
@@ -568,66 +542,19 @@ namespace MyEShop.Migrations
                     b.Navigation("ProductComment");
                 });
 
-            modelBuilder.Entity("MyEShop.Models.Entities.Product.Product", b =>
-                {
-                    b.HasOne("MyEShop.Models.Entities.Category.Category", "Category")
-                        .WithMany("Product")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("MyEShop.Models.Entities.Product.ProductAttribute", b =>
-                {
-                    b.HasOne("MyEShop.Models.Entities.Product.Product", "Product")
-                        .WithMany("ProductAttributes")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("MyEShop.Models.Entities.Product.ProductComment", b =>
                 {
-                    b.HasOne("MyEShop.Models.Entities.Product.Product", "Product")
-                        .WithMany("ProductComments")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MyEShop.Models.Entities.Users.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MyEShop.Models.Entities.Product.ProductImage", b =>
-                {
-                    b.HasOne("MyEShop.Models.Entities.Product.Product", "Product")
-                        .WithMany("ProductImages")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MyEShop.Models.Entities.Product.ProductQuestionAndAnswer", b =>
                 {
-                    b.HasOne("MyEShop.Models.Entities.Product.Product", "Product")
-                        .WithMany("ProductQuestions")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MyEShop.Models.Entities.Product.ProductQuestionAndAnswer", null)
                         .WithMany("Answers")
                         .HasForeignKey("ProductQuestionAndAnswerId");
@@ -637,8 +564,6 @@ namespace MyEShop.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
@@ -678,19 +603,6 @@ namespace MyEShop.Migrations
                     b.Navigation("AllCategories");
 
                     b.Navigation("Children");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MyEShop.Models.Entities.Product.Product", b =>
-                {
-                    b.Navigation("ProductAttributes");
-
-                    b.Navigation("ProductComments");
-
-                    b.Navigation("ProductImages");
-
-                    b.Navigation("ProductQuestions");
                 });
 
             modelBuilder.Entity("MyEShop.Models.Entities.Product.ProductComment", b =>

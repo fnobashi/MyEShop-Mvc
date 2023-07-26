@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyEShop.Context;
 
@@ -11,9 +12,11 @@ using MyEShop.Context;
 namespace MyEShop.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230725205131_ChangeToProductTablesRelations")]
+    partial class ChangeToProductTablesRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,10 +153,6 @@ namespace MyEShop.Migrations
 
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -512,21 +511,21 @@ namespace MyEShop.Migrations
                         new
                         {
                             Id = 1L,
-                            CreateDate = new DateTime(2023, 7, 26, 11, 38, 2, 387, DateTimeKind.Local).AddTicks(4785),
+                            CreateDate = new DateTime(2023, 7, 26, 0, 21, 30, 752, DateTimeKind.Local).AddTicks(672),
                             IsDeleted = false,
                             RoleName = "Admin"
                         },
                         new
                         {
                             Id = 2L,
-                            CreateDate = new DateTime(2023, 7, 26, 11, 38, 2, 387, DateTimeKind.Local).AddTicks(4870),
+                            CreateDate = new DateTime(2023, 7, 26, 0, 21, 30, 752, DateTimeKind.Local).AddTicks(745),
                             IsDeleted = false,
                             RoleName = "Operator"
                         },
                         new
                         {
                             Id = 3L,
-                            CreateDate = new DateTime(2023, 7, 26, 11, 38, 2, 387, DateTimeKind.Local).AddTicks(4895),
+                            CreateDate = new DateTime(2023, 7, 26, 0, 21, 30, 752, DateTimeKind.Local).AddTicks(769),
                             IsDeleted = false,
                             RoleName = "Customer"
                         });

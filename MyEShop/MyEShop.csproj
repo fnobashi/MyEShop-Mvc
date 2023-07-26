@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.8">
       <PrivateAssets>all</PrivateAssets>
@@ -37,10 +38,15 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\ViewModels\Category\" />
+    <Folder Include="Contracts\Services\" />
+    <Folder Include="Services\" />
+    <Folder Include="wwwroot\lib\sweetAlert\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="bundleconfig.json" />
+    <None Include="wwwroot\Css\Main.css.map" />
     <None Include="wwwroot\Fonts\font-icons\font-icons.svg" />
     <None Include="wwwroot\Fonts\font-icons\font-icons.woff2" />
     <None Include="wwwroot\Fonts\Vazir\Farsi-Digits-Without-Latin\Vazir-Black-FD-WOL.woff2" />
@@ -69,6 +75,28 @@
     <None Include="wwwroot\Fonts\Vazir\Without-Latin\Vazir-WOL.woff2" />
     <None Include="wwwroot\Fonts\Yekan\Yekan.svg" />
     <None Include="wwwroot\Fonts\Yekan\Yekan.woff2" />
+    <None Include="wwwroot\Images\Errors\404.ai" />
+    <None Include="wwwroot\Images\Errors\404.svg" />
+    <None Include="wwwroot\Images\Footer\Icons\24-hours-support.svg" />
+    <None Include="wwwroot\Images\Footer\Icons\delivery-truck.svg" />
+    <None Include="wwwroot\Images\Footer\Icons\easy-return.svg" />
+    <None Include="wwwroot\Images\Footer\Icons\income.svg" />
+    <None Include="wwwroot\Images\Footer\Icons\original.svg" />
+    <None Include="wwwroot\Js\Repeater.js" />
+    <None Include="wwwroot\Js\Script.js" />
+    <None Include="wwwroot\Vendors\Ez-Plus\src\jquery.ez-plus.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.min.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.min.map" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.nice-select.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.nice-select.min.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.slim.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.slim.min.js" />
+    <None Include="wwwroot\Vendors\Jquery\jquery.slim.min.map" />
+    <None Include="wwwroot\Vendors\Owl-Carousel\LICENSE" />
+    <None Include="wwwroot\Vendors\Owl-Carousel\owl.carousel.js" />
+    <None Include="wwwroot\Vendors\Owl-Carousel\owl.carousel.min.js" />
+    <None Include="wwwroot\Vendors\Owl-Carousel\README.md" />
   </ItemGroup>
 
 </Project>
