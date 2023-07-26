@@ -1,0 +1,57 @@
+﻿@using MyEShop.Models.Entities.Product;
+@model List<Product>
+
+@{
+    ViewData["Title"] = "لیست محصولات";
+    int totalPages = ViewBag.TotalPages;
+    int page = ViewBag.Page;
+    int pageSize = ViewBag.PageSize;
+}
+
+
+<div class="card">
+    <header class="card-header">
+        <h4>دسته بندی های محصولات</h4>
+        <div class="d-block my-2">
+            <a asp-action="Add" class="btn btn-primary">افزودن</a>
+        </div>
+    </header>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>نام محصول</th>
+                    <th>گروه</th>
+                    <th>کنترل ها</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>@item.Name</strong></td>
+                        <td>@item.Category.Name</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id"><i class="bx bx-trash me-1"></i> حذف</a>
+                                    <a class="dropdown-item" asp-action="Detail" asp-route-id="@item.Id"><i class="bx bx-detail  me-1"></i> جزئیات</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+        <div class="card-footer text-center my-auto">
+            @await Component.InvokeAsync("AdminPagination" , new {page , pageSize , totalPages})
+        </div>
+
+    </div>
+</div>

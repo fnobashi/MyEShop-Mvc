@@ -1,0 +1,87 @@
+﻿@using MyEShop.Models.Entities.Product;
+@model Product;
+@{
+    ViewData["Title"] = "جزئیات " + Model.Name;
+}
+
+
+<div class="col-12">
+    <div class="card mb-3">
+        <div class="card-header">جزئیات محصول</div>
+        <div class="card-body">
+            <h5 class="card-title text-white">جزئیات @Model.Name</h5>
+
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">نام محصول</small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.Name</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">نام لاتین </small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.LatinName</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">قیمت</small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.Price</p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">تخفیف</small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.Discount</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">موجودی</small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.Inventory</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">تاریخ ایجاد</small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.CreateDate.ToShamsiDate()</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-middle"><small class="text-light fw-semibold">تاریخ ویرایش</small></td>
+                        <td class="py-3">
+                            <p class="mb-0">@Model.ModifiedDate?.ToShamsiDate()</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="divider">
+                <div class="divider-text">عکس ها</div>
+            </div>
+            <div class="row">
+                <div class="container">
+                    <div class="d-flex flex-wrap">
+                        @foreach (var item in Model.ProductImages)
+                        {
+                            <div class="img-thumbnail">
+                                <img src="/Images/ProductsImage/@item.ImageName" width="200" height="200" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider">
+                <div class="divider-text">شرح محصول</div>
+            </div>
+            <div class="row">
+                <div class="container">
+                    @Model.Description
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+﻿@using MyEShop.Models.Entities.Product;
+@model Product;
+@{
+    ViewData["Title"] = "حذف محصول";
+}
+
+
+<div class="col-12">
+    <div class="card bg-danger text-white mb-3">
+        <div class="card-header">حذف محصول</div>
+        <div class="card-body">
+            <h5 class="card-title text-white">آیا از حذف محصول @Model.Name مطمئن هستید؟</h5>
+            <form asp-action="DeleteConfirmed" asp-antiforgery="true" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-warning ms-2">بله</button>
+                    <button type="button" onclick="history.back()" class="btn btn-info">خیر </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

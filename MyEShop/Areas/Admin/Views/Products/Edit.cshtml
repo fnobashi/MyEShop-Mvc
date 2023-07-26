@@ -1,0 +1,110 @@
+﻿@using MyEShop.Models.Entities.Product;
+@model Product;
+
+@{
+	ViewData["Title"] = "ویرایش محصول";
+}
+
+<div class="row">
+	<!-- Basic with Icons -->
+	<div class="col-xxl">
+		<div class="card mb-4">
+			<div class="card-header d-flex align-items-center justify-content-between">
+				<h5 class="mb-0">ویرایش محصول</h5>
+			</div>
+			<div class="card-body">
+				<form asp-action="Edit" asp-controller="Products" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+					<div class="text-danger" asp-validation-summary="All"></div>
+					<input type="hidden" asp-for="Id" />
+					<input type="hidden" asp-for="CreateDate"/>
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="CategoryId"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<select asp-for="CategoryId" class="form-control form-select" asp-items="@ViewBag.CategoryList">
+									<option value="">انتخاب گروه پدر</option>
+								</select>
+							</div>
+							<span asp-validation-for="CategoryId" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="Name"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Name" class="form-control">
+							</div>
+							<span asp-validation-for="Name" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="LatinName"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="LatinName" class="form-control">
+							</div>
+							<span asp-validation-for="LatinName" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Inventory"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Inventory" class="form-control">
+							</div>
+							<span asp-validation-for="Inventory" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Discount"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Discount" class="form-control">
+							</div>
+							<span asp-validation-for="Discount" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Price"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Price" class="form-control">
+							</div>
+							<span asp-validation-for="Price" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="Description"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<textarea asp-for="Description" class="form-control" rows="10"></textarea>
+							</div>
+							<span asp-validation-for="Description" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="formFileMultiple" class="form-label">انتخاب عکس ها</label>
+						<input class="form-control" type="file" id="productImages" name="productImages" multiple="" accept="image/png, image/jpeg ,image/jpg">
+					</div>
+
+					<div class="row justify-content-end">
+						<div class="col-sm-10">
+							<button type="submit" class="btn btn-primary">ویرایش</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}
