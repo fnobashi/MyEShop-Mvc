@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyEShop.Utilities;
+using MyEShop.Constants;
+using System.Text.RegularExpressions;
 
 namespace MyEShop.Areas.Admin.Controllers
 {
@@ -11,5 +12,17 @@ namespace MyEShop.Areas.Admin.Controllers
         {
             return View();
         }
+
+
+        // this is for test reason
+        public IActionResult Error()
+        {
+            throw new Exception("Exception");
+        }
+        public IActionResult Nothing()
+        {
+            return NotFound();
+        }
+
     }
 }

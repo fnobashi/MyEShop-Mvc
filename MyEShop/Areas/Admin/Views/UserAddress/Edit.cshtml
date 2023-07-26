@@ -1,0 +1,55 @@
+﻿@using MyEShop.Areas.Admin.Models.ViewModels.Users;
+
+@model UserAddressViewModel
+
+@{
+	ViewData["Title"] = "ویرایش آدرس کاربر";
+}
+
+<div class="row">
+	<!-- Basic with Icons -->
+	<div class="col-xxl">
+		<div class="card mb-4">
+			<div class="card-header d-flex align-items-center justify-content-between">
+				<h5 class="mb-0">افزودن</h5>
+			</div>
+			<div class="card-body">
+				<form asp-action="Edit" asp-controller="UserAddress" asp-antiforgery="true" method="post">
+					<input type="hidden" asp-for="Id" />
+					<input type="hidden" asp-for="CreatedDate" />
+					<input type="hidden" asp-for="UserId" />
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="AddressText"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="AddressText" class="form-control">
+							</div>
+							<span asp-validation-for="AddressText" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<label class="col-sm-2 form-label" asp-for="PostalCode"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="PostalCode" class="form-control phone-mask" placeholder="16123456789" aria-label="16123456789">
+							</div>
+							<span asp-validation-for="PostalCode" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row justify-content-end">
+						<div class="col-sm-10">
+							<button type="submit" class="btn btn-primary">ویرایش</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}

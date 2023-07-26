@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MyEShop.Areas.Admin.Models.ViewModels.Users;
-using MyEShop.Models.Context;
+using MyEShop.Context;
 
 namespace MyEShop.ViewComponents
 {
@@ -13,7 +13,7 @@ namespace MyEShop.ViewComponents
         {
             this.context = context;
         }
-        public async Task<IViewComponentResult> InvokeAsync(long id)
+        public async Task<IViewComponentResult> InvokeAsync(Guid id)
         {
             var user = await context.Users.FindAsync(id);
 

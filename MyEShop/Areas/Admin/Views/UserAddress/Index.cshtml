@@ -1,28 +1,32 @@
-﻿@using MyEShop.Areas.Admin.Models.ViewModels.Users
-@model IEnumerable<UsersListViewModel>
+﻿@using MyEShop.Models.Entities.Users;
+@model List<Address>
+
 @{
-    ViewData["Title"] = "لیست کاربران";
+    ViewData["Title"] = "آدرس ها";
     int totalPages = ViewBag.TotalPages;
     int page = ViewBag.Page;
     int pageSize = ViewBag.PageSize;
+    Guid? userId = ViewBag.UserId;
 }
 
-<partial name="_AccountNavPills" />
+
 <div class="card">
     <header class="card-header">
-        <h4>کاربران سایت</h4>
-        <div class="d-block">
-                <partial name="_SortNavbar" />
-        </div>
-
+        <h2>آدرس ها</h2>
+        @if (userId != null)
+        {
+            <div class="d-block my-2">
+                <a asp-action="Add" asp-route-id="@userId" class="btn btn-primary">افزودن آدرس جدید</a>
+            </div>
+        }
     </header>
     <div class="table-responsive text-nowrap">
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>نام کامل</th>
-                    <th>ایمیل</th>
-                    <th>شماره تماس</th>
+                    <th>ایمیل کاربر</th>
+                    <th>شماره تلفن</th>
+                    <th>کد پستی</th>
                     <th>کنترل ها</th>
                 </tr>
             </thead>
@@ -30,26 +34,19 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td><strong>@item.FullName</strong></td>
-                        <td>@item.Email</td>
-                        <td>@item.PhoneNumber</td>
+                        <td><strong>@item.User.Email</strong></td>
+                        <td>@item.User.Phone</td>
+                        <td>@item.PostalCode</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-vertical-rounded"></i>
                                 </button>
                                 <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.UserId"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
-                                    <a class="dropdown-item" asp-action="ChangePassword" asp-route-id="@item.UserId">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path fill="currentColor" d="M21 2a8.998 8.998 0 0 0-8.612 11.612L2 24v6h6l10.388-10.388A9 9 0 1 0 21 2Zm0 16a7.013 7.013 0 0 1-2.032-.302l-1.147-.348l-.847.847l-3.181 3.181L12.414 20L11 21.414l1.379 1.379l-1.586 1.586L9.414 23L8 24.414l1.379 1.379L7.172 28H4v-3.172l9.802-9.802l.848-.847l-.348-1.147A7 7 0 1 1 21 18Z" /><circle cx="22" cy="10" r="2" fill="currentColor" /></svg>
-                                        تغییر کلمه عبور
-                                    </a>
-                                    <a class="dropdown-item" asp-action="Index" asp-controller="UserAddress" asp-route-id="@item.UserId">
-                                        <i class='bx bx-home-smile'></i>
-                                        آدرس ها
-                                    </a>
-                                    <a class="dropdown-item" onclick="ViewDeleteResult('@item.UserId')"><i class="bx bx-trash me-1"></i> حذف</a>
-                                    <a class="dropdown-item" onclick="ViewDetail('@item.UserId')"><i class="bx bx-detail  me-1"></i> جزئیات</a>
+                                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+
+                                    <a class="dropdown-item" onclick="ViewDeleteResult('@item.Id')"><i class="bx bx-trash me-1"></i> حذف</a>
+                                    <a class="dropdown-item" onclick="ViewDetail('@item.Id')"><i class="bx bx-detail  me-1"></i> جزئیات</a>
                                 </div>
                             </div>
                         </td>
@@ -88,7 +85,6 @@
     </div>
 
 }
-
 @section Scripts{
 
     <script src="~/lib/sweetalert/sweetalert2.all.min.js"></script>
@@ -96,28 +92,28 @@
     <script>
         function ReplaceModalFooter() {
             let footer = `
-                            <div class="modal-footer">
-                                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                 بستن
-                                 </button>
-                            </div>`;
+                                    <div class="modal-footer">
+                                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                         بستن
+                                         </button>
+                                    </div>`;
             $("#Modal .modal-footer").replaceWith(footer)
         }
         function ViewDetail(id) {
             ReplaceModalFooter();
-            $("#ModalContent").load("/Admin/Users/Detail/" + id);
+            $("#ModalContent").load("/Admin/UserAddress/Detail/" + id);
             $("#Modal").modal("show");
         }
 
         function ViewDeleteResult(id) {
             ReplaceModalFooter();
             let btnDelete = `
-                                        <button type="button" onclick="Delete('${id}')" class="btn btn-danger" data-bs-dismiss="modal">
-                                            حذف
-                                        </button>
-                                  `;
+                                                <button type="button" onclick="Delete('${id}')" class="btn btn-danger" data-bs-dismiss="modal">
+                                                    حذف
+                                                </button>
+                                          `;
             $("#Modal .modal-footer").append(btnDelete);
-            $("#ModalContent").load("/Admin/Users/Delete/" + id);
+            $("#ModalContent").load("/Admin/UserAddress/Delete/" + id);
             $("#Modal").modal("show");
         }
 
@@ -138,7 +134,7 @@
         function Delete(id) {
             $.ajax({
                 type: "POST",
-                url: "/Admin/Users/DeleteConfirmed",
+                url: "/Admin/UserAddress/DeleteConfirmed/" + id,
                 data: { id: id },
             }).done(function (result) {
                 console.log(result)

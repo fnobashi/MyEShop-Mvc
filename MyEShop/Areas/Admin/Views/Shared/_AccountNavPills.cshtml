@@ -1,0 +1,12 @@
+﻿@{
+    Layout = null;
+}
+
+<ul class="nav nav-pills flex-column flex-md-row mb-3">
+    <li class="nav-item ">
+        <a class="nav-link @(Context.Request.Path.ToString().ToLower().Contains("users/add") ? "active" : "")" asp-action="Add" asp-controller="Users"><i class="bx bx-user-plus me-1"></i> افزودن حساب جدید</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link  @(Context.Request.Path.ToString().ToLower() == "/admin/users" ? "active" : "")" asp-action="Index" asp-controller="Users" asp-area="Admin"><i class="bx bx-user me-1"></i> لیست کاربران</a>
+    </li>
+</ul>

@@ -1,39 +1,62 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MyEShop.Areas.Admin.Models.ViewModels.Users;
-using MyEShop.Models.Context;
+using MyEShop.Constants;
+using MyEShop.Contracts.Repositories;
+using MyEShop.Models;
 using MyEShop.Models.Entities.Users;
 using MyEShop.Utilities;
+using System.Net;
+using System.Net.WebSockets;
 
 namespace MyEShop.Areas.Admin.Controllers
 {
     [Area(AreaName.Admin)]
     public class UsersController : Controller
     {
-        private readonly ShopDbContext _context;
-
-        public UsersController(ShopDbContext context)
+        private readonly IUserRepository userRepository;
+        private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly ILogger<UsersController> logger;
+        public UsersController(IUserRepository userRepository, IWebHostEnvironment webHostEnvironment, ILogger<UsersController> logger)
         {
-            _context = context;
+            this.userRepository = userRepository;
+            this.webHostEnvironment = webHostEnvironment;
+            this.logger = logger;
         }
 
-        public IActionResult Index(int page = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(PaginationModel? pagination, SortBy sortBy)
         {
+
+            int pageSize;
+
+            if (pagination?.PageSize > 0)
+            {
+                Response.Cookies.Append(CookieName.PageSize, pagination.PageSize.ToString());
+                pageSize = pagination.PageSize;
+            }
+            else
+            {
+                pageSize = int.Parse(Request.Cookies[CookieName.PageSize] ?? "5");
+            }
+            var page = pagination?.Page ?? 1;
+
             int totalPages;
-            var users = _context.Users.ToPaged(page  , pageSize ,  out totalPages ).Select(u => new UsersListViewModel
+            var res = userRepository.GetAll(sortBy).ToPaged(page, pageSize, out totalPages);
+
+            var model = await res.Select(u => new UsersListViewModel()
             {
                 UserId = u.Id,
                 FullName = u.Name + " " + u.Family,
                 Email = u.Email,
                 PhoneNumber = u.Phone
+            }).ToListAsync();
 
-            }).ToList();
-
-			ViewBag.TotalPages = totalPages;
+            ViewBag.TotalPages = totalPages;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
 
-            return View(users);
+            return View(model);
+
         }
 
         #region addUser 
@@ -45,7 +68,7 @@ namespace MyEShop.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(UserViewModel user)
+        public async Task<IActionResult> Add(UserViewModel user, IFormFile? userImg)
         {
             if (!ModelState.IsValid)
                 return View(user);
@@ -55,86 +78,158 @@ namespace MyEShop.Areas.Admin.Controllers
                 Name = user.Name,
                 Family = user.Family,
                 Email = user.Email,
-                Address = user.Address,
                 Phone = user.Phone,
-                IsDeleted = false , 
-                CreateDate = DateTime.Now  , 
-                PostalCode = user.PostalCode  , 
-                Password  = user.Password  
+                IsDeleted = false,
+                CreateDate = DateTime.Now,
+                Password = user.Password,
+
             };
 
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            if (userImg == null)
+                newUser.ImageName = "Avatar.jpg";
+            else
+            {
 
+                string path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "Images", "Account");
+                var uploadresult = await ImageUploader.UploadAsync(userImg, path);
+                if (!uploadresult.IsSuccess && uploadresult.IsValidExtension)
+                {
+                    newUser.ImageName = "Avatar.jpg";
+                    logger.LogError("Image wasnt uploaded");
+                }
+                else
+                {
+                    switch (uploadresult.IsValidExtension)
+                    {
+                        case true:
+                            {
+                                newUser.ImageName = uploadresult.FileName;
+                                break;
+                            }
+                        case false:
+                            {
+                                newUser.ImageName = "Avatar.jpg";
+                                ModelState.AddModelError(string.Empty, "فرمت فایل پشتیبانی نمیشود");
+                                return View(user);
+                            }
+                    }
+                }
+            }
+
+            var userRoles = new List<UserInRole>();
+            if (user.IsAdmin)
+                userRoles.Add(new UserInRole { UserId = newUser.Id, RoleId = 1, CreateDate = DateTime.Now });
+            if (user.IsOperator)
+                userRoles.Add(new UserInRole { UserId = newUser.Id, RoleId = 2, CreateDate = DateTime.Now });
+            if (user.IsNormalUser)
+                userRoles.Add(new UserInRole { UserId = newUser.Id, RoleId = 3, CreateDate = DateTime.Now });
+
+            newUser.Roles = userRoles;
+            await userRepository.AddAsync(newUser);
             return RedirectToAction("Index");
+
         }
         #endregion
 
         #region Delete
         [HttpGet]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            try
-            {
-                var user = await _context.Users.FindAsync(id);
-                if (user == null) return NotFound();
-                return ViewComponent("UserDetail", new { id = id });
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            var user = await userRepository.GetByIdAsync(id);
+            if (user == null) return NotFound();
+            return ViewComponent("UserDetail", new { id = id });
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(long id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            return View();
-        }
-        #endregion 
-
-        #region EditUser 
-        public IActionResult Edit(long id)
-        {
-            try
-            {
-                var user = _context.Users.Find(id);
-                if (user == null) return NotFound();
-                return Json(user);
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
-        }
-
-        [HttpPost]
-        public IActionResult Edit(User user)
-        {
-            if (!ModelState.IsValid)
-                return View(user);
-
-            _context.Users.Update(user);
-            _context.SaveChanges();
-            return View("Index");
+            await userRepository.DeleteAsync(Guid.Parse(id));
+            return NoContent();
         }
         #endregion
 
         #region Detail
-        public IActionResult Detail(long id)
+        public async Task<IActionResult> Detail(Guid id)
         {
-            try
-            {
-                var user = _context.Users.Find(id);
-                if (user == null) return NotFound();
-                return ViewComponent("UserDetail", new { id = id });
-
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            var res = await userRepository.GetByIdAsync(id);
+            if (res == null) return NotFound();
+            return ViewComponent("UserDetail", new { id = id });
         }
         #endregion
+
+        #region EditUser 
+        public async Task<IActionResult> Edit(Guid id)
+        {
+
+            var res = await userRepository.GetByIdAsync(id);
+            if (res == null) return NotFound();
+            var model = new UpdateViewModel()
+            {
+                Id = res.Id,
+                Name = res.Name,
+                Family = res.Family,
+                Email = res.Email,
+                Phone = res.Phone,
+                IsAdmin = res.Roles.Any(r => r.RoleId == 1),
+                IsOperator = res.Roles.Any(r => r.RoleId == 2),
+                IsNormalUser = res.Roles.Any(r => r.RoleId == 3),
+                ImageName = res.ImageName
+            };
+
+            TempData["Password"] = res.Password;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(UpdateViewModel model, IFormFile? userImg)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await userRepository.GetByIdAsync(model.Id);
+            if (userImg != null)
+            {
+
+                string path = Path.Combine(webHostEnvironment.ContentRootPath, "wwwroot", "Images", "Account");
+                System.IO.File.Delete(Path.Combine(path, user.ImageName));
+                var uploadResult = await ImageUploader.UploadAsync(userImg, path);
+                if (uploadResult.IsSuccess)
+                    user.ImageName = uploadResult.FileName;
+                else
+                    logger.LogError("Image was not Uploaded");
+            }
+
+            user.Name = model.Name;
+            user.Family = model.Family;
+            user.Email = model.Email;
+            user.Phone = model.Phone;
+            var userRoles = new List<UserInRole>();
+            if (model.IsAdmin)
+                userRoles.Add(new UserInRole { UserId = user.Id, RoleId = 1, CreateDate = DateTime.Now });
+            if (model.IsOperator)
+                userRoles.Add(new UserInRole { UserId = user.Id, RoleId = 2, CreateDate = DateTime.Now });
+            if (model.IsNormalUser)
+                userRoles.Add(new UserInRole { UserId = user.Id, RoleId = 3, CreateDate = DateTime.Now });
+            user.Roles = userRoles;
+            await userRepository.UpdateAsync(user);
+            return RedirectToAction("Index");
+        }
+        #endregion
+
+        [HttpGet]
+        public IActionResult ChangePassword(Guid id)
+        {
+            return View();
+        }
+        public IActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            userRepository.ChangePassword(model.Id, model.Password);
+            return RedirectToAction("index");
+
+        }
+
     }
 }

@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null; 
+    string actionName = ViewContext.RouteData.Values["action"] as string;
+
+}
+
+<div class="card-body border-bottom">
+    <small class="text-light fw-semibold">مرتب سازی</small>
+    <div class="demo-inline-spacing">
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                مرتب سازی بر اساس
+            </button>
+            <ul class="dropdown-menu" style="">
+                <li><a class="dropdown-item" asp-action="@actionName" asp-route-sortBy="@SortBy.Descending">نزولی</a></li>
+                <li><a class="dropdown-item" asp-action="@actionName" asp-route-sortBy="@SortBy.Ascending">صعودی</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" asp-action="@actionName" asp-route-sortBy="@SortBy.CreateDateDescending">تاریخ ایجاد نزولی</a></li>
+                <li><a class="dropdown-item" asp-action="@actionName" asp-route-sortBy="@SortBy.CreateDateAscending">تاریخ ایجاد صعودی</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" asp-action="@actionName" asp-route-sortBy="@SortBy.ModifiedDateDescending">تاریخ ویرایش نزولی</a></li>
+                <li><a class="dropdown-item" asp-action="@actionName" asp-route-sortBy="@SortBy.ModifiedDateAscending">تاریخ ویرایش صعودی</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

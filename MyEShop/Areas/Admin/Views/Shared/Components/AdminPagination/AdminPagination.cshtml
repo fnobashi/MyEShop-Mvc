@@ -1,0 +1,118 @@
+﻿@{
+    Layout = null; 
+    int totalPages = ViewBag.TotalPages;
+    int page = ViewBag.Page;
+    int pageSize = ViewBag.PageSize;
+    string actionName = ViewContext.RouteData.Values["action"] as string; 
+}
+
+<div class="row">
+    <div class="col-10">
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @if (page > 1)
+                {
+                    <li class="page-item first">
+                        <a class="page-link" asp-action="@actionName" asp-route-page="1" asp-route-pageSize="@pageSize"><i class="tf-icon bx bx-chevrons-right"></i></a>
+                    </li>
+                    <li class="page-item prev">
+                        <a class="page-link" asp-action="@actionName" asp-route-page="@((page - 1))" asp-route-pageSize="@pageSize"><i class="tf-icon bx bx-chevron-right"></i></a>
+                    </li>
+                }
+
+                @if (totalPages <= 5)
+                {
+                    // Show all pages if the total pages are less than or equal to 5
+                    for (var i = 1; i <= totalPages; i++)
+                    {
+                        if (i == page)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">@i</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="@actionName" asp-route-page="@i" asp-route-pageSize="@pageSize">@i</a>
+                            </li>
+                        }
+                    }
+                }
+                else
+                {
+                    // Show a limited range of pages if the total pages are more than 5
+                    var startPage = Math.Max(page - 2, 1);
+                    var endPage = Math.Min(startPage + 4, totalPages);
+
+                    if (startPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="@actionName" asp-route-page="1" asp-route-pageSize="@pageSize">1</a>
+                        </li>
+                        if (startPage > 2)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                    }
+
+                    for (var i = startPage; i <= endPage; i++)
+                    {
+                        if (i == page)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link">@i</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-action="@actionName" asp-route-page="@i" asp-route-pageSize="@pageSize">@i</a>
+                            </li>
+                        }
+                    }
+
+                    if (endPage < totalPages)
+                    {
+                        if (endPage < totalPages - 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link" asp-action="@actionName" asp-route-page="@totalPages" asp-route-pageSize="@pageSize">@totalPages</a>
+                        </li>
+                    }
+                }
+                @if (page < totalPages)
+                {
+                    <li class="page-item next">
+                        <a class="page-link" asp-action="@actionName" asp-route-page="@((page + 1))" asp-route-pageSize="@pageSize"><i class="tf-icon bx bx-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item last">
+                        <a class="page-link" asp-action="@actionName" asp-route-page="@totalPages" asp-route-pageSize="@pageSize"><i class="tf-icon bx bx-chevrons-left"></i></a>
+                    </li>
+                }
+            </ul>
+        </nav>
+
+    </div>
+    <div class="col-2">
+        <form asp-action="@actionName" method="get">
+            <div class="form-group">
+                <label class="">تعداد نمایش</label>
+                <select onchange="this.form.submit()" name="pageSize" class="form-select">
+                    <option selected>تعداد</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="25">25</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>

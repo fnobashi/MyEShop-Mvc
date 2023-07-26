@@ -1,30 +1,31 @@
-﻿@model MyEShop.Models.Entities.Users.User
+﻿@using MyEShop.Models.Entities.Users;
+@model Address;
 
 <table class="table table-borderless">
     <tbody>
         <tr>
-            <td class="align-middle"><small class="text-light fw-semibold">نام</small></td>
+            <td class="align-middle"><small class="text-light fw-semibold">آدرس</small></td>
             <td class="py-3">
-                <p class="mb-0">@Model.Name</p>
+                <p class="mb-0">@Model.AddressText</p>
             </td>
         </tr>
         <tr>
-            <td class="align-middle"><small class="text-light fw-semibold">نام خانوادگی</small></td>
+            <td class="align-middle"><small class="text-light fw-semibold">کد پستی</small></td>
             <td class="py-3">
-                <p class="mb-0">@Model.Family</p>
+                <p class="mb-0">@Model.PostalCode</p>
             </td>
         </tr>
         <tr>
             <td class="align-middle"><small class="text-light fw-semibold">ایمیل</small></td>
             <td class="py-3">
-                <p class="mb-0">@Model.Email</p>
+                <p class="mb-0">@Model.User.Email</p>
             </td>
         </tr>
 
         <tr>
             <td class="align-middle"><small class="text-light fw-semibold">تلفن همراه</small></td>
             <td class="py-3">
-                <p class="mb-0">@Model.Phone</p>
+                <p class="mb-0">@Model.User.Phone</p>
             </td>
         </tr>
         <tr>
