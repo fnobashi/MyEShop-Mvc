@@ -1,0 +1,11 @@
+﻿@using MyEShop.Models.Entities.Category;
+@model List<Category>
+<tr>
+    @foreach (var category in Model)
+    {
+        @if (!category.IsDuplicate)
+        {
+            <partial name="_CategoryNode" model="category" />
+        }
+    }
+</tr>

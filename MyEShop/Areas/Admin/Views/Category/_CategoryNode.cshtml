@@ -1,0 +1,32 @@
+﻿@model MyEShop.Models.Entities.Category.Category
+
+@if (!Model.IsDuplicate)
+{
+    <tr> <td>
+            @if (Model.Parent != null)
+            {
+                @Model.Parent.Name <text> => </text>
+            }
+            @Model.Name
+        </td>
+        <td>
+            <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.Id"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                    <a class="dropdown-item" asp-action="Delete" asp-route-id="@Model.Id"><i class="bx bx-trash me-1"></i>حذف</a>
+                </div>
+            </div>
+        </td>
+    </tr>
+    @if (Model.Children != null && Model.Children.Count > 0)
+    {
+        <partial name="_CategoryTree" model="Model.Children" />
+    }
+}
+
+@{
+    Model.IsDuplicate = true;
+}

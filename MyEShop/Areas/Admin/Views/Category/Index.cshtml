@@ -1,0 +1,40 @@
+﻿@using MyEShop.Models.Entities.Category;
+@model List<Category> 
+
+@{
+    ViewData["Title"] = "دسته بندی ها";
+    int totalPages = ViewBag.TotalPages;
+    int page = ViewBag.Page;
+    int pageSize = ViewBag.PageSize;
+}
+
+
+<div class="card">
+    <header class="card-header">
+        <h4>دسته بندی های محصولات</h4>
+        <div class="d-block my-2">
+            <a asp-action="Add" class="btn btn-primary">افزودن</a>
+        </div>
+    </header>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>نام</th>
+                    <th>کنترل ها</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+
+                @await Html.PartialAsync("_CategoryTree", Model)
+            </tbody>
+        </table>
+
+
+        <div class="card-footer text-center my-auto">
+            @await Component.InvokeAsync("AdminPagination" , new {page , pageSize , totalPages})
+        </div>
+
+    </div>
+</div>
+

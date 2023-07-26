@@ -1,0 +1,54 @@
+﻿@using MyEShop.Models.Entities.Category;
+@model Category
+
+@{
+	ViewData["Title"] = "افزودن دسته بندی جدید";
+}
+
+<div class="row">
+	<!-- Basic with Icons -->
+	<div class="col-xxl">
+		<div class="card mb-4">
+			<div class="card-header d-flex align-items-center justify-content-between">
+				<h5 class="mb-0">افزودن</h5>
+			</div>
+			<div class="card-body">
+				<form asp-action="Add" asp-controller="Category" asp-antiforgery="true" method="post">
+					<div class="text-danger" asp-validation-summary="All"></div>
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="Name"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<input asp-for="Name" class="form-control">
+							</div>
+							<span asp-validation-for="Name" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label" asp-for="ParentId"></label>
+						<div class="col-sm-10">
+							<div class="input-group">
+								<select asp-for="ParentId" class="form-control form-select" asp-items="@(new SelectList(Model.AllCategories, "Id", "Name"))">
+									<option value="">انتخاب گروه پدر</option>
+								</select>
+							</div>
+							<span asp-validation-for="ParentId" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row justify-content-end">
+						<div class="col-sm-10">
+							<button type="submit" class="btn btn-primary">افزودن</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}
