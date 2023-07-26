@@ -210,3 +210,63 @@
     margin-left : auto !important;
     margin-right: -4.2rem !important;
 }
+
+.swal2-container{
+    z-index: 1000000 !important;
+}
+
+.nav-pills{
+    padding-right: 0 !important;  
+}
+
+.dropdown-item{
+    cursor: pointer !important;
+}
+.first {
+    margin-left: 3px !important;
+}
+
+
+element {
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #5f6e7f;
+    background-color: rgba(67, 89, 113, 0.04);
+}
+
+a:hover {
+    color: #787bff;
+}
+
+a:hover {
+    color: #5f61e6;
+}
+
+.dropdown-item {
+    cursor: pointer !important;
+}
+
+.dropdown-item {
+    line-height: 1.54;
+}
+
+.dropdown-item{
+    text-align: right !important;
+}
+.dropdown-toggle::after{
+    margin-left: 0 !important;
+    margin-right: 0.5em !important;
+}
+
+.center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-select {
+    background-position: left 0.875rem center !important;
+}
